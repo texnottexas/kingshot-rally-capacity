@@ -66,7 +66,7 @@ img{display:block;max-width:100%;height:auto}
   mix-blend-mode:multiply;opacity:.05;z-index:1;
 }
 
-h1,h2,h3,.cz{font-family:"Cinzel",serif;font-weight:700;letter-spacing:.01em;line-height:1.06}
+h1,h2,h3{font-family:"Cinzel",serif;font-weight:700;letter-spacing:.01em;line-height:1.06}
 strong,b{font-weight:700;color:inherit}
 em{font-style:italic}
 a{color:inherit}
@@ -244,7 +244,7 @@ section{position:relative}
 
 .calc-inputs{display:flex;flex-direction:column;gap:1.3rem}
 .field{display:flex;flex-direction:column;gap:.5rem}
-.field label{font-family:"Cinzel";font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+.field label,.field .lbl{font-family:"Cinzel";font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--gold-deep)}
 .field .hint{font-size:.86rem;color:var(--ink-soft);font-style:italic;margin-top:-.25rem}
 
@@ -270,8 +270,9 @@ section{position:relative}
   box-shadow:inset 0 1px 0 #fff8, 0 3px 8px -3px oklch(0.74 0.13 73 / .55)}
 .leader-row input{width:100%;border:none;background:transparent;
   font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.05rem;color:var(--ink);
-  padding:.3rem .2rem;outline:none}
+  padding:.3rem .2rem;outline:none;border-radius:6px}
 .leader-row input::placeholder{color:var(--ink-faint);font-weight:500}
+.leader-row input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
 .leader-row .unit{font-family:"Cinzel";font-weight:600;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
 .leader-row.invalid{border-color:var(--ember);box-shadow:0 0 0 3px oklch(0.515 0.2 32 / .15)}
 
@@ -344,7 +345,6 @@ section{position:relative}
 .diagram .arr{display:grid;place-items:center;font-family:"Cinzel";font-weight:800;color:var(--gold-deep);font-size:1.4rem;padding:0 .2rem}
 
 /* ============ language switcher ============ */
-body{top:0 !important}
 body > .skiptranslate{display:none !important}
 .goog-te-banner-frame.skiptranslate{display:none !important}
 #google_translate_element{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
@@ -439,19 +439,19 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="wrap">
-    <div class="hero-text">
+    <div>
       <div class="kicker" data-rv>
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 4.8L20 8l-4 3.6L17 18l-5-3-5 3 1-6.4L4 8l5.6-1.2z"/></svg>
         <span>Bear Hunt Codex</span>
       </div>
-      <h1 data-rv class="d1"><span class="small">Kingshot Bear Hunt</span><span class="word">Rally Capacity</span></h1>
-      <p class="blurb" data-rv style="--d:2">Where every number comes from, how they add up on the rally screen, and the simple split that keeps fourteen joiners filling every slot.</p>
-      <div class="byline" data-rv style="--d:3">
+      <h1 class="d1" data-rv><span class="small">Kingshot Bear Hunt</span><span class="word">Rally Capacity</span></h1>
+      <p class="blurb d2" data-rv>Where every number comes from, how they add up on the rally screen, and the simple split that keeps fourteen joiners filling every slot.</p>
+      <div class="byline d3" data-rv>
         <span class="seal">T</span>
         <div>A coordination tool · for the bear-hunt callers of every kingdom</div>
       </div>
     </div>
-    <div class="hero-art" data-rv class="d2">
+    <div class="hero-art d2" data-rv>
       <img src="assets/hero.jpg" alt="A bear at a forest table doing rally-capacity math alongside a sage and two helpers">
     </div>
   </div>
@@ -463,7 +463,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   <div class="wrap">
     <div class="sec-eyebrow" data-rv>I. The Three Numbers</div>
     <h2 data-rv>Three screens, <span class="accent">three numbers</span></h2>
-    <p class="lead" data-rv class="d1">Every rally is decided by three figures pulled from three different places in the game. Find each one, learn what it controls, and the rally screen total stops being a mystery.</p>
+    <p class="lead d1" data-rv>Every rally is decided by three figures pulled from three different places in the game. Find each one, learn what it controls, and the rally screen total stops being a mystery.</p>
 
     <div class="numbers-grid">
       <article class="num-card" data-rv>
@@ -479,7 +479,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
         </div>
       </article>
 
-      <article class="num-card" data-rv class="d1">
+      <article class="num-card d1" data-rv>
         <div class="shot">
           <img src="assets/march-setup.jpg" alt="March setup screen showing Deployment Capacity 152,210/152,210">
           <div class="callout" style="left:3%;top:17.3%;width:33%;height:2.6%"><span class="tag">Deployment</span></div>
@@ -492,7 +492,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
         </div>
       </article>
 
-      <article class="num-card" data-rv class="d2">
+      <article class="num-card d2" data-rv>
         <div class="shot">
           <img src="assets/rally-screen.png" alt="Rally screen showing Team 152,210 of 1,069,210 and 1 of 15 slots">
           <div class="callout" style="left:2%;top:36.5%;width:53%;height:3.6%"><span class="tag">Team Total</span></div>
@@ -513,7 +513,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   <div class="wrap">
     <div class="sec-eyebrow" data-rv>II. The Math</div>
     <h2 data-rv>How the rally screen <span class="accent">adds up</span></h2>
-    <p class="lead" data-rv class="d1">The "Team" number you see when joining a rally is just the leader's march plus the room they have reserved for joiners. Once you split that joiner pool by the number of allies who show up, you know exactly how big each person should march.</p>
+    <p class="lead d1" data-rv>The "Team" number you see when joining a rally is just the leader's march plus the room they have reserved for joiners. Once you split that joiner pool by the number of allies who show up, you know exactly how big each person should march.</p>
 
     <div class="diagram">
       <div class="node sky" data-rv>
@@ -521,14 +521,14 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
         <div class="val">152,210</div>
         <div class="sub">The leader's own march</div>
       </div>
-      <div class="arr" data-rv class="d1">+</div>
-      <div class="node gold" data-rv class="d2">
+      <div class="arr d1" data-rv>+</div>
+      <div class="node gold d2" data-rv>
         <div class="lbl">Rally Capacity</div>
         <div class="val">917,000</div>
         <div class="sub">Pool reserved for joiners</div>
       </div>
-      <div class="arr" data-rv class="d3">=</div>
-      <div class="node ember" data-rv class="d4">
+      <div class="arr d3" data-rv>=</div>
+      <div class="node ember d4" data-rv>
         <div class="lbl">Team Total</div>
         <div class="val">1,069,210</div>
         <div class="sub">What the rally screen shows</div>
@@ -556,17 +556,17 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   <div class="wrap">
     <div class="sec-eyebrow" data-rv>III. The Tool</div>
     <h2 data-rv>Plan your <span class="accent">bear hunt</span></h2>
-    <p class="lead" data-rv class="d1">Drop in your rally leaders' capacities and how many allies will be online. The calculator averages the leaders so anyone can call, then splits the pool by the players showing up.</p>
+    <p class="lead d1" data-rv>Drop in your rally leaders' capacities and how many allies will be online. The calculator averages the leaders so anyone can call, then splits the pool by the players showing up.</p>
 
     <div class="calc" data-rv>
       <div class="calc-grid">
         <div class="calc-inputs">
           <div class="field">
-            <label for="ldCount">How many rally leaders?</label>
+            <span class="lbl">How many rally leaders?</span>
             <div class="hint">Anyone in the kingdom who could call the bear rally.</div>
-            <div class="stepper" id="ldStepper">
+            <div class="stepper" id="ldStepper" role="group" aria-label="Number of rally leaders">
               <button type="button" data-act="dec" aria-label="Decrease leader count">−</button>
-              <span class="v" id="ldCountV">1</span>
+              <span class="v" id="ldCountV" aria-live="polite">1</span>
               <button type="button" data-act="inc" aria-label="Increase leader count">+</button>
             </div>
           </div>
@@ -578,11 +578,11 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
           </div>
 
           <div class="field">
-            <label for="plStepper">Joiners on the hunt</label>
+            <span class="lbl">Joiners on the hunt</span>
             <div class="hint">How many allies will tap to join (excluding the rally leader). Caps at 14, the rally's joiner-slot limit.</div>
-            <div class="stepper" id="plStepper">
+            <div class="stepper" id="plStepper" role="group" aria-label="Joiners on the hunt">
               <button type="button" data-act="dec" aria-label="Decrease joiner count">−</button>
-              <span class="v" id="plCountV">14</span>
+              <span class="v" id="plCountV" aria-live="polite">14</span>
               <button type="button" data-act="inc" aria-label="Increase joiner count">+</button>
             </div>
           </div>
@@ -622,16 +622,16 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     <div id="scenarios" style="margin-top:3.4rem">
       <div class="sec-eyebrow" data-rv>IV. Common scenarios</div>
       <h2 data-rv style="font-size:clamp(1.6rem,1rem + 2.4vw, 2.6rem)">At a glance, with <span class="accent">917,000</span> rally capacity</h2>
-      <p class="lead" data-rv class="d1" style="margin-bottom:1.4rem">A reference table for the most common bear-hunt turnouts. Recommend whichever row matches the kingdom that night.</p>
+      <p class="lead d1" data-rv style="margin-bottom:1.4rem">A reference table for the most common bear-hunt turnouts. Recommend whichever row matches the kingdom that night.</p>
       <div class="scenarios">
         <table>
           <thead>
             <tr>
-              <th>Joiners online</th>
-              <th>Divisor used</th>
-              <th>Each joiner sends</th>
-              <th>Joiner seats filled</th>
-              <th>All 14 seats?</th>
+              <th scope="col">Joiners online</th>
+              <th scope="col">Divisor used</th>
+              <th scope="col">Each joiner sends</th>
+              <th scope="col">Joiner seats filled</th>
+              <th scope="col">All 14 seats?</th>
             </tr>
           </thead>
           <tbody id="scTable"></tbody>
@@ -646,7 +646,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   <div class="wrap">
     <h3>Built for the bear-hunt callers</h3>
     <p>An open coordination tool for Kingshot kingdoms. No accounts, no tracking - just the math, your numbers, and a slot for every ally that shows up.</p>
-    <p class="credit">Companion to the <a href="https://texnottexas.github.io/kingshot-bear-hunt/">Kingshot Bear Hunt Codex</a>. Kingshot and its assets belong to their respective owners; this is a non-commercial fan tool.</p>
+    <p class="credit">Companion to the <a href="https://texnottexas.github.io/kingshot-bear-hunt/" rel="noopener noreferrer">Kingshot Bear Hunt Codex</a>. Kingshot and its assets belong to their respective owners; this is a non-commercial fan tool.</p>
   </div>
 </footer>
 
@@ -671,8 +671,9 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
 
 /* ============ calculator ============ */
 (function(){
-  var ldCount=1, plCount=14, capacities=[917000];
   var MIN_LD=1, MAX_LD=8, MIN_PL=1, MAX_PL=14;
+  var ldCount=1, plCount=14;
+  var capacities=new Array(MAX_LD); for(var _i=0;_i<MAX_LD;_i++) capacities[_i]=917000;
 
   var ldCountV=document.getElementById('ldCountV'),
       plCountV=document.getElementById('plCountV'),
@@ -689,20 +690,35 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     if(!isFinite(n)||n<0) n=0;
     return Math.round(n).toLocaleString('en-US');
   }
+  var MAX_CAP=5e7;
   function parseCap(v){
     if(!v) return 0;
     var s=String(v).trim().toLowerCase().replace(/[, ]/g,'');
     if(!s) return 0;
+    // collapse period-as-thousands-separator (e.g. German "1.234.567")
+    s=s.replace(/\.(?=\d{3}(\D|$))/g,'');
     var m=s.match(/^(\d+(?:\.\d+)?)([kmb])?$/);
-    if(!m) return parseFloat(s)||0;
-    var x=parseFloat(m[1]);
-    if(m[2]==='k') x*=1e3;
-    else if(m[2]==='m') x*=1e6;
-    else if(m[2]==='b') x*=1e9;
+    var x;
+    if(!m) x=parseFloat(s)||0;
+    else {
+      x=parseFloat(m[1]);
+      if(m[2]==='k') x*=1e3;
+      else if(m[2]==='m') x*=1e6;
+      else if(m[2]==='b') x*=1e9;
+    }
+    if(!isFinite(x)||x<0) x=0;
+    if(x>MAX_CAP) x=MAX_CAP;
     return x;
   }
 
   function renderLeaders(){
+    // Preserve focus + selection across rebuild
+    var active=document.activeElement;
+    var prevIdx=(active && active.parentNode && active.parentNode.parentNode===leadersList)
+      ? Number(active.dataset.idx) : -1;
+    var prevStart=prevIdx>=0?active.selectionStart:0;
+    var prevEnd=prevIdx>=0?active.selectionEnd:0;
+
     leadersList.innerHTML='';
     for(var i=0;i<ldCount;i++){
       var row=document.createElement('div');
@@ -712,35 +728,53 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
       input.type='text'; input.inputMode='numeric'; input.spellcheck=false;
       input.placeholder='e.g. 917000';
       input.value=capacities[i]?capacities[i].toLocaleString('en-US'):'';
+      input.dataset.idx=i;
       input.setAttribute('aria-label','Leader '+(i+1)+' rally capacity');
-      (function(idx,el){
-        el.addEventListener('input',function(){
-          var raw=el.value;
-          var stripped=raw.replace(/,/g,'');
-          if(/^\d+$/.test(stripped)){
-            var n=parseInt(stripped,10);
-            if(n>=1000){
-              var f=n.toLocaleString('en-US');
-              if(f!==raw){
-                el.value=f;
-                try{el.setSelectionRange(f.length,f.length);}catch(e){}
-              }
-            }
-          }
-          capacities[idx]=parseCap(el.value);
-          update();
-        });
-        el.addEventListener('blur',function(){
-          var v=parseCap(el.value);
-          capacities[idx]=v;
-          el.value=v?v.toLocaleString('en-US'):'';
-        });
-      })(i,input);
       var unit=document.createElement('div'); unit.className='unit'; unit.textContent='units';
       row.appendChild(ix); row.appendChild(input); row.appendChild(unit);
       leadersList.appendChild(row);
     }
+
+    if(prevIdx>=0 && prevIdx<ldCount){
+      var el=leadersList.children[prevIdx].querySelector('input');
+      el.focus();
+      try{el.setSelectionRange(prevStart,prevEnd);}catch(e){}
+    }
   }
+
+  // count digit characters in s[0..pos)
+  function digitsBefore(s,pos){ var n=0; for(var i=0;i<pos && i<s.length;i++) if(s.charCodeAt(i)>=48 && s.charCodeAt(i)<=57) n++; return n; }
+  // find the position in s containing `count` digit characters
+  function posAtDigits(s,count){ var n=0,i=0; for(;i<s.length;i++){ if(n>=count) break; if(s.charCodeAt(i)>=48 && s.charCodeAt(i)<=57) n++; } return i; }
+
+  // Delegated listeners (live formatting with caret preservation, blur normalizes)
+  leadersList.addEventListener('input',function(e){
+    var el=e.target; if(!el.matches('input')) return;
+    var idx=Number(el.dataset.idx);
+    var raw=el.value, stripped=raw.replace(/,/g,'');
+    if(/^\d+$/.test(stripped)){
+      var n=parseInt(stripped,10);
+      if(n>=1000 && n<=MAX_CAP){
+        var f=n.toLocaleString('en-US');
+        if(f!==raw){
+          var caret=el.selectionStart||0;
+          var d=digitsBefore(raw,caret);
+          el.value=f;
+          var newCaret=posAtDigits(f,d);
+          try{el.setSelectionRange(newCaret,newCaret);}catch(e2){}
+        }
+      }
+    }
+    capacities[idx]=parseCap(el.value);
+    update();
+  });
+  leadersList.addEventListener('blur',function(e){
+    var el=e.target; if(!el.matches('input')) return;
+    var idx=Number(el.dataset.idx);
+    var v=parseCap(el.value);
+    capacities[idx]=v;
+    el.value=v?v.toLocaleString('en-US'):'';
+  },true);
 
   function capStats(){
     var sum=0,n=0,mn=Infinity;
@@ -754,11 +788,21 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   function update(){
     var s=capStats();
     var joiners=Math.max(1,Math.min(plCount,14));
+    if(s.n===0){
+      rOutAvg.textContent='—';
+      rOutMin.textContent='—';
+      bAvg.textContent='—';
+      bMin.textContent='—';
+      bPl.textContent=plCount;
+      rSub.textContent='Enter at least one leader’s Rally Capacity to see a recommendation.';
+      renderScenarios(917000);
+      return;
+    }
     var perAvg=s.avg/joiners;
     var perMin=s.min/joiners;
     rOutAvg.textContent=fmt(perAvg);
     rOutMin.textContent=fmt(perMin);
-    bAvg.textContent=fmt(s.avg);
+    bAvg.textContent=fmt(s.avg)+(ldCount>1?' ('+s.n+' of '+ldCount+' leaders)':'');
     bMin.textContent=fmt(s.min);
     bPl.textContent=plCount;
     var slotsFilled=Math.min(plCount,14);
@@ -767,9 +811,10 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     var partA;
     if(slotsEmpty===0) partA='All 14 joiner slots fill - this is the sweet spot.';
     else partA=slotsFilled+' of 14 joiner slots filled. '+slotsEmpty+' seat'+(slotsEmpty===1?'':'s')+' stay empty unless more allies show up.';
-    var partB=equalCaps
-      ? ' With one leader (or equal capacities), Recommended and Safe are the same number.'
-      : ' If the leader with the smallest pool ends up calling, use the Safe size so the 14 joiners still fit.';
+    var partB;
+    if(equalCaps) partB=' With one leader (or equal capacities), Recommended and Safe are the same number.';
+    else if(joiners===1) partB=' One joiner fills 1 of 14 slots regardless of which leader calls.';
+    else partB=' If the leader with the smallest pool ends up calling, use the Safe size so '+joiners+' joiner'+(joiners===1?'':'s')+' still fit.';
     rSub.textContent=partA+partB;
     renderScenarios(s.avg);
   }
@@ -799,8 +844,6 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     if(b.dataset.act==='inc' && ldCount<MAX_LD) ldCount++;
     else if(b.dataset.act==='dec' && ldCount>MIN_LD) ldCount--;
     if(ldCount===prev) return;
-    while(capacities.length<ldCount) capacities.push(917000);
-    if(capacities.length>ldCount) capacities.length=ldCount;
     ldCountV.textContent=ldCount;
     renderLeaders();
     update();
@@ -813,6 +856,29 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     plCountV.textContent=plCount;
     update();
   });
+
+  // Expose a state-snapshot bridge for the language switcher's restoreEnglish/reload path
+  window.snapshotCalcState=function(){
+    try{sessionStorage.setItem('calcState',JSON.stringify({ldCount:ldCount,plCount:plCount,capacities:capacities.slice(0,MAX_LD)}));}catch(e){}
+  };
+
+  // Hydrate from sessionStorage if we just reloaded from a language change
+  try{
+    var saved=sessionStorage.getItem('calcState');
+    if(saved){
+      sessionStorage.removeItem('calcState');
+      var st=JSON.parse(saved);
+      if(st && typeof st.ldCount==='number'){
+        ldCount=Math.max(MIN_LD,Math.min(MAX_LD,st.ldCount|0));
+        plCount=Math.max(MIN_PL,Math.min(MAX_PL,st.plCount|0));
+        if(Array.isArray(st.capacities)) for(var _k=0;_k<MAX_LD && _k<st.capacities.length;_k++){
+          var _cv=Number(st.capacities[_k]); if(isFinite(_cv) && _cv>=0) capacities[_k]=Math.min(MAX_CAP,_cv);
+        }
+        ldCountV.textContent=ldCount;
+        plCountV.textContent=plCount;
+      }
+    }
+  }catch(e){}
 
   renderLeaders();
   update();
@@ -857,52 +923,90 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     var m=document.cookie.match(/googtrans=\/en\/([a-zA-Z-]{2,10})/);
     return (m && m[1]) ? m[1] : 'en';
   }
+  var RTL_BASES={ar:1,he:1,fa:1,ur:1};
+  function applyDir(code){
+    var base=(code||'en').split('-')[0];
+    document.documentElement.dir=RTL_BASES[base]?'rtl':'ltr';
+  }
   function updateBtn(code){
     var d=dataFor(code);
     flagEl.textContent=d?d.flag:'🌐';
     codeEl.textContent=(d?d.code:code).split('-')[0].toUpperCase();
     var opts=grid.querySelectorAll('.lang-opt');
     for(var i=0;i<opts.length;i++) opts[i].classList.toggle('active', opts[i].getAttribute('data-lang')===code);
+    applyDir(code);
   }
   function applyToCombo(code,delay){
     var n=0, poll=setInterval(function(){
       var combo=document.querySelector('.goog-te-combo');
       if(combo){combo.value=code; combo.dispatchEvent(new Event('change')); clearInterval(poll); updateBtn(code);}
-      if(++n>40) clearInterval(poll);
+      if(++n>40){ clearInterval(poll); try{console.warn('Google Translate combo not ready after 8s; language change may not have applied.');}catch(e){} }
     }, delay||200);
   }
   window.applyToCombo=applyToCombo;
 
-  function openModal(){overlay.classList.add('active');}
-  function closeModal(){overlay.classList.remove('active');}
+  var lastFocus=null;
+  function focusables(){ return overlay.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'); }
+  function openModal(){
+    lastFocus=document.activeElement;
+    overlay.classList.add('active');
+    var first=focusables()[0];
+    if(first) first.focus();
+  }
+  function closeModal(){
+    overlay.classList.remove('active');
+    if(lastFocus && typeof lastFocus.focus==='function') lastFocus.focus();
+  }
+  function trapTab(e){
+    if(e.key!=='Tab' || !overlay.classList.contains('active')) return;
+    var f=focusables(); if(!f.length) return;
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+  function snapshotState(){
+    try{ if(typeof window.snapshotCalcState==='function') window.snapshotCalcState(); }catch(e){}
+  }
   function restoreEnglish(){
     try{sessionStorage.removeItem('pendingLang');}catch(e){}
+    snapshotState();
     document.cookie='googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+    document.cookie='googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain='+location.hostname+'; SameSite=Lax';
     closeModal(); location.reload();
   }
   function select(code){
     if(code==='en'){restoreEnglish(); return;}
     try{sessionStorage.setItem('pendingLang',code);}catch(e){}
+    snapshotState();
     applyToCombo(code,200); closeModal();
   }
 
   var detected=detect();
+  applyDir(detected);
   LANGUAGES.forEach(function(l){
     var b=document.createElement('button');
     b.className='lang-opt notranslate'+(l.code===detected?' active':'');
     b.setAttribute('data-lang',l.code);
-    var f=document.createElement('span'); f.className='flag'; f.textContent=l.flag;
+    b.setAttribute('type','button');
+    var f=document.createElement('span'); f.className='flag'; f.textContent=l.flag; f.setAttribute('aria-hidden','true');
     var n=document.createElement('span'); n.className='name'; n.textContent=l.name;
     b.appendChild(f); b.appendChild(n);
-    b.addEventListener('click',function(){select(l.code);});
     grid.appendChild(b);
+  });
+  grid.addEventListener('click',function(e){
+    var b=e.target.closest('.lang-opt'); if(!b) return;
+    select(b.getAttribute('data-lang'));
   });
   updateBtn(detected);
 
   fab.addEventListener('click',openModal);
   document.getElementById('langClose').addEventListener('click',closeModal);
   overlay.addEventListener('click',function(e){if(e.target===overlay) closeModal();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape' && overlay.classList.contains('active')) closeModal();});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && overlay.classList.contains('active')) closeModal();
+    else trapTab(e);
+  });
+
 })();
 
 function googleTranslateElementInit(){
@@ -912,6 +1016,6 @@ function googleTranslateElementInit(){
   if(pending) window.applyToCombo(pending,250);
 }
 </script>
-<script src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
