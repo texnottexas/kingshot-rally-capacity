@@ -282,13 +282,27 @@ section{position:relative}
 .calc-result::before{content:"";position:absolute;inset:0;
   background:radial-gradient(80% 60% at 50% 0%, oklch(0.74 0.13 73 / .18), transparent 65%);pointer-events:none}
 .calc-result .r-label{font-family:"Cinzel";font-weight:600;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--gold-bright);margin-bottom:.5rem;position:relative}
-.calc-result .r-value{font-family:"Cinzel";font-weight:800;font-size:clamp(2.4rem,7vw,3.6rem);line-height:1.05;
+  color:var(--gold-bright);margin-bottom:.85rem;position:relative}
+.r-dual{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;position:relative;margin-bottom:.95rem}
+@media(max-width:520px){.r-dual{grid-template-columns:1fr}}
+.r-val{padding:.95rem 1rem 1rem;border-radius:12px;border:1px solid oklch(0.74 0.13 73 / .22);
+  background:linear-gradient(180deg, oklch(0.74 0.13 73 / .08), oklch(0.74 0.13 73 / .02));
+  position:relative;overflow:hidden}
+.r-val.safe{border-color:oklch(0.56 0.13 145 / .35);
+  background:linear-gradient(180deg, oklch(0.56 0.13 145 / .12), oklch(0.56 0.13 145 / .03))}
+.r-tier{font-family:"Cinzel";font-weight:700;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold-bright);margin-bottom:.45rem}
+.r-val.safe .r-tier{color:oklch(0.78 0.12 145)}
+.r-num{font-family:"Cinzel";font-weight:800;font-size:clamp(1.7rem,4.6vw,2.5rem);line-height:1.05;
   background:linear-gradient(180deg,var(--gold-bright),var(--gold) 65%,var(--gold-deep));
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 4px 16px oklch(0.74 0.13 73 / .35));position:relative;margin-bottom:.45rem}
-.calc-result .r-sub{font-size:.95rem;color:oklch(0.82 0.025 78 / .9);line-height:1.5;position:relative}
-.calc-result .breakdown{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid oklch(0.74 0.13 73 / .2);position:relative}
+  filter:drop-shadow(0 4px 14px oklch(0.74 0.13 73 / .3));margin-bottom:.3rem}
+.r-val.safe .r-num{background:linear-gradient(180deg, oklch(0.85 0.14 145), oklch(0.56 0.13 145));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 14px oklch(0.56 0.13 145 / .3))}
+.r-mini{font-size:.78rem;color:oklch(0.78 0.02 78 / .75);line-height:1.4;font-style:italic}
+.calc-result .r-sub{font-size:.93rem;color:oklch(0.82 0.025 78 / .9);line-height:1.5;position:relative}
+.calc-result .breakdown{margin-top:1.2rem;padding-top:1rem;border-top:1px solid oklch(0.74 0.13 73 / .2);position:relative}
 .breakdown-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
   padding:.45rem 0;border-bottom:1px dashed oklch(0.74 0.13 73 / .15);font-size:.92rem}
 .breakdown-row:last-child{border-bottom:none}
@@ -524,15 +538,15 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     <div class="formula-box" data-rv>
       <div style="font-family:'Cinzel';font-weight:600;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);text-align:center;margin-bottom:.9rem">The joiner split</div>
       <div class="formula">
-        <span class="t">Rally Capacity</span><span class="op">÷</span><span class="t leaf">min(players, 14)</span><span class="eq">=</span><span class="res">Joiner march size</span>
+        <span class="t">Rally Capacity</span><span class="op">÷</span><span class="t leaf">joiners</span><span class="eq">=</span><span class="res">Joiner march size</span>
       </div>
-      <div class="formula-note">Players means how many allies are coordinating - including the leader. The cap at 14 is the number of joiner slots in a rally.</div>
+      <div class="formula-note">A rally has 14 joiner slots beside the leader. Divide the leader's Rally Capacity by however many joiners are actually coordinating, up to 14.</div>
       <div class="example-row">
         <div class="ex-chip"><span class="lbl">Rally Capacity</span><span class="v gold">917,000</span></div>
-        <div class="ex-chip"><span class="lbl">Players online</span><span class="v sky">14</span></div>
+        <div class="ex-chip"><span class="lbl">Joiners</span><span class="v sky">14</span></div>
         <div class="ex-chip"><span class="lbl">Each joiner sends</span><span class="v ember">65,500</span></div>
       </div>
-      <div class="formula-note" style="margin-top:1rem">At 14 joiners that math fills the pool exactly. With fewer players, each joiner sends more - so the slots that <em>are</em> filled still use the whole pool.</div>
+      <div class="formula-note" style="margin-top:1rem">At 14 joiners that math fills the pool exactly. With fewer joiners, each one sends more - so the slots that <em>are</em> filled still use the whole pool.</div>
     </div>
   </div>
 </section>
@@ -564,33 +578,43 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
           </div>
 
           <div class="field">
-            <label for="plStepper">Players joining the hunt</label>
-            <div class="hint">Default 14 - the maximum number of joiners a rally can hold.</div>
+            <label for="plStepper">Joiners on the hunt</label>
+            <div class="hint">How many allies will tap to join (excluding the rally leader). Caps at 14, the rally's joiner-slot limit.</div>
             <div class="stepper" id="plStepper">
-              <button type="button" data-act="dec" aria-label="Decrease player count">−</button>
+              <button type="button" data-act="dec" aria-label="Decrease joiner count">−</button>
               <span class="v" id="plCountV">14</span>
-              <button type="button" data-act="inc" aria-label="Increase player count">+</button>
+              <button type="button" data-act="inc" aria-label="Increase joiner count">+</button>
             </div>
           </div>
         </div>
 
         <div class="calc-result">
-          <div class="r-label">Recommended joiner march</div>
-          <div class="r-value" id="rOut">65,500</div>
-          <div class="r-sub" id="rSub">Each joiner should set their march to roughly this size. That keeps every slot filled without anyone overspilling the leader's capacity.</div>
+          <div class="r-label">Each joiner should send</div>
+          <div class="r-dual">
+            <div class="r-val">
+              <div class="r-tier">Recommended</div>
+              <div class="r-num" id="rOutAvg">65,500</div>
+              <div class="r-mini">Across the leaders' average pool.</div>
+            </div>
+            <div class="r-val safe">
+              <div class="r-tier">Safe</div>
+              <div class="r-num" id="rOutMin">65,500</div>
+              <div class="r-mini">Guarantees a fit on the smallest leader.</div>
+            </div>
+          </div>
+          <div class="r-sub" id="rSub">Each joiner can set their march to the recommended size. If a leader with a smaller-than-average pool ends up calling, use the safe size so all 14 still fit.</div>
           <div class="breakdown">
+            <div class="breakdown-row"><span class="k">Joiners</span><span class="v" id="bPl">14</span></div>
             <div class="breakdown-row"><span class="k">Average rally capacity</span><span class="v" id="bAvg">917,000</span></div>
-            <div class="breakdown-row"><span class="k">Players counted</span><span class="v" id="bPl">14</span></div>
-            <div class="breakdown-row"><span class="k">Divisor used</span><span class="v" id="bDiv">14</span></div>
-            <div class="breakdown-row"><span class="k">Joiner pool used</span><span class="v" id="bUsed">917,000</span></div>
+            <div class="breakdown-row"><span class="k">Lowest rally capacity</span><span class="v" id="bMin">917,000</span></div>
           </div>
         </div>
       </div>
 
       <div class="calc-tips">
-        <b>Why average across leaders?</b> Any leader could end up calling the rally. Averaging means a single joiner march size works no matter whose Command Center the hunt starts from - no one over-commits, no one wastes a slot.
+        <b>Recommended vs Safe.</b> Recommended uses the leaders' average pool: a number that works well across the group on most calls. Safe uses the smallest leader's pool: a slightly lower number that guarantees all 14 joiners fit no matter who ends up calling. With a single leader (or matched capacities) the two values are identical.
         <br><br>
-        <b>Why cap at 14 players?</b> A rally only has 14 joiner slots. Beyond fourteen the math stops changing - the first fourteen to tap fill the rally, and any extra allies start the next call.
+        <b>Why cap at 14 joiners?</b> A rally only has 14 joiner slots. Beyond fourteen the math stops changing - the first fourteen to tap fill the rally, and any extra allies start the next call.
       </div>
     </div>
 
@@ -603,7 +627,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
         <table>
           <thead>
             <tr>
-              <th>Players online</th>
+              <th>Joiners online</th>
               <th>Divisor used</th>
               <th>Each joiner sends</th>
               <th>Joiner seats filled</th>
@@ -653,12 +677,12 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
   var ldCountV=document.getElementById('ldCountV'),
       plCountV=document.getElementById('plCountV'),
       leadersList=document.getElementById('leadersList'),
-      rOut=document.getElementById('rOut'),
+      rOutAvg=document.getElementById('rOutAvg'),
+      rOutMin=document.getElementById('rOutMin'),
       rSub=document.getElementById('rSub'),
       bAvg=document.getElementById('bAvg'),
+      bMin=document.getElementById('bMin'),
       bPl=document.getElementById('bPl'),
-      bDiv=document.getElementById('bDiv'),
-      bUsed=document.getElementById('bUsed'),
       scTable=document.getElementById('scTable');
 
   function fmt(n){
@@ -706,32 +730,36 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     }
   }
 
-  function avgCap(){
-    var sum=0,n=0;
+  function capStats(){
+    var sum=0,n=0,mn=Infinity;
     for(var i=0;i<ldCount;i++){
       var v=capacities[i]||0;
-      if(v>0){ sum+=v; n++; }
+      if(v>0){ sum+=v; n++; if(v<mn) mn=v; }
     }
-    return n?sum/n:0;
+    return {avg:n?sum/n:0, min:n?mn:0, n:n};
   }
 
   function update(){
-    var a=avgCap();
-    var div=Math.min(plCount,14);
-    var per=div>0?a/div:0;
-    var joinersFilled=Math.min(plCount-1,14);
-    if(joinersFilled<0) joinersFilled=0;
-    rOut.textContent=fmt(per);
-    bAvg.textContent=fmt(a);
+    var s=capStats();
+    var joiners=Math.max(1,Math.min(plCount,14));
+    var perAvg=s.avg/joiners;
+    var perMin=s.min/joiners;
+    rOutAvg.textContent=fmt(perAvg);
+    rOutMin.textContent=fmt(perMin);
+    bAvg.textContent=fmt(s.avg);
+    bMin.textContent=fmt(s.min);
     bPl.textContent=plCount;
-    bDiv.textContent=div;
-    bUsed.textContent=fmt(per*joinersFilled);
-    if(plCount===1){
-      rSub.textContent='No joiners yet - add at least one ally so the rally has someone to call.';
-    } else {
-      rSub.textContent=joinersFilled+' joiner slot'+(joinersFilled===1?'':'s')+' filled out of 14. Each joiner can safely send up to this much without overspilling the leader.';
-    }
-    renderScenarios(a);
+    var slotsFilled=Math.min(plCount,14);
+    var slotsEmpty=14-slotsFilled;
+    var equalCaps=(s.n<=1)||(Math.abs(s.avg-s.min)<1);
+    var partA;
+    if(slotsEmpty===0) partA='All 14 joiner slots fill - this is the sweet spot.';
+    else partA=slotsFilled+' of 14 joiner slots filled. '+slotsEmpty+' seat'+(slotsEmpty===1?'':'s')+' stay empty unless more allies show up.';
+    var partB=equalCaps
+      ? ' With one leader (or equal capacities), Recommended and Safe are the same number.'
+      : ' If the leader with the smallest pool ends up calling, use the Safe size so the 14 joiners still fit.';
+    rSub.textContent=partA+partB;
+    renderScenarios(s.avg);
   }
 
   function renderScenarios(a){
@@ -739,18 +767,15 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     var rows=[3,5,7,9,11,12,13,14];
     var html='';
     rows.forEach(function(n){
-      var div=Math.min(n,14);
-      var per=a/div;
-      var joinersFilled=Math.min(n-1,14);
-      var pool=per*joinersFilled;
-      var allFilled=(joinersFilled===14);
+      var per=a/n;
+      var allFilled=(n===14);
       var hi=(n===14)?' class="hi"':'';
       html+='<tr'+hi+'>'+
-        '<td>'+n+' players</td>'+
-        '<td>÷ '+div+'</td>'+
+        '<td>'+n+' joiner'+(n===1?'':'s')+'</td>'+
+        '<td>÷ '+n+'</td>'+
         '<td>'+fmt(per)+'</td>'+
-        '<td>'+joinersFilled+' / 14</td>'+
-        '<td>'+(allFilled?'<span class="check">Yes</span>':'<span class="x">'+(14-joinersFilled)+' empty</span>')+'</td>'+
+        '<td>'+n+' / 14</td>'+
+        '<td>'+(allFilled?'<span class="check">Yes</span>':'<span class="x">'+(14-n)+' empty</span>')+'</td>'+
       '</tr>';
     });
     scTable.innerHTML=html;
