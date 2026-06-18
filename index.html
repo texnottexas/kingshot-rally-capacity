@@ -715,6 +715,18 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
       input.setAttribute('aria-label','Leader '+(i+1)+' rally capacity');
       (function(idx,el){
         el.addEventListener('input',function(){
+          var raw=el.value;
+          var stripped=raw.replace(/,/g,'');
+          if(/^\d+$/.test(stripped)){
+            var n=parseInt(stripped,10);
+            if(n>=1000){
+              var f=n.toLocaleString('en-US');
+              if(f!==raw){
+                el.value=f;
+                try{el.setSelectionRange(f.length,f.length);}catch(e){}
+              }
+            }
+          }
           capacities[idx]=parseCap(el.value);
           update();
         });
