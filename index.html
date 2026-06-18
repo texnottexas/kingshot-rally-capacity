@@ -134,29 +134,18 @@ a{color:inherit}
   display:grid;place-items:center;font-family:"Cinzel";font-weight:800;color:var(--iron);
   box-shadow:0 4px 14px -4px oklch(0.74 0.13 73 / .6), inset 0 1px 0 #fff7}
 
-/* hero art - illustrated bear emblem */
-.hero-art{position:relative;display:grid;place-items:center;aspect-ratio:1;max-width:420px;width:100%;justify-self:center}
-.hero-art .ring{position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle at center, oklch(0.74 0.13 73 / .14), transparent 60%);
-  border:1px dashed oklch(0.74 0.13 73 / .35)}
-.hero-art .ring.r2{inset:8%;border-style:solid;border-color:oklch(0.74 0.13 73 / .22)}
-.hero-art .ring.r3{inset:18%;border:1px dashed oklch(0.74 0.13 73 / .3);
-  animation:spin 60s linear infinite}
-.hero-art .core{position:relative;z-index:3;width:60%;aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, oklch(0.4 0.05 50), oklch(0.16 0.03 50) 75%);
-  display:grid;place-items:center;
-  box-shadow:0 25px 50px -20px #000a, inset 0 -8px 30px oklch(0.74 0.13 73 / .12), inset 0 2px 0 #fff1;
-  border:1px solid oklch(0.74 0.13 73 / .35)}
-.hero-art .core svg{width:65%;height:65%;color:var(--gold-bright);
-  filter:drop-shadow(0 4px 12px oklch(0.74 0.13 73 / .5))}
-.hero-art .pip{position:absolute;width:14px;height:14px;border-radius:50%;
-  background:radial-gradient(circle, var(--gold-bright), var(--gold-deep));
-  box-shadow:0 0 14px oklch(0.74 0.13 73 / .8);z-index:4}
-.hero-art .pip:nth-child(4){top:5%;left:50%;transform:translateX(-50%)}
-.hero-art .pip:nth-child(5){top:50%;right:5%;transform:translateY(-50%)}
-.hero-art .pip:nth-child(6){bottom:5%;left:50%;transform:translateX(-50%)}
-.hero-art .pip:nth-child(7){top:50%;left:5%;transform:translateY(-50%)}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* hero art - illustrated scene */
+.hero-art{position:relative;width:100%;max-width:460px;justify-self:center;
+  border-radius:22px;overflow:hidden;
+  background:linear-gradient(180deg, oklch(0.74 0.13 73 / .12), oklch(0.515 0.2 32 / .08)) padding-box,
+    linear-gradient(135deg, var(--gold-bright), var(--gold-deep) 55%, var(--gold)) border-box;
+  border:2px solid transparent;
+  box-shadow:0 30px 60px -24px #000c, 0 0 0 1px oklch(0.74 0.13 73 / .12), inset 0 1px 0 #fff2;
+  transform:rotate(.6deg)}
+.hero-art::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 50% at 50% 0%, transparent, oklch(0.16 0.03 50 / .35) 100%);
+  border-radius:inherit}
+.hero-art img{width:100%;height:auto;display:block;border-radius:20px}
 
 .scrollcue{position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:3;
   display:flex;flex-direction:column;align-items:center;gap:.45rem;
@@ -400,7 +389,6 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
 [data-rv].d3{transition-delay:.24s}[data-rv].d4{transition-delay:.32s}
 @media (prefers-reduced-motion:reduce){
   [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
-  .hero-art .ring.r3{animation:none!important}
   .num-card .callout{animation:none!important}
   .scrollcue .ln{animation:none!important}
 }
@@ -450,13 +438,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
       </div>
     </div>
     <div class="hero-art" data-rv class="d2">
-      <span class="ring"></span><span class="ring r2"></span><span class="ring r3"></span>
-      <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
-      <div class="core">
-        <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-          <path d="M16 28c0-7 6-12 12-12h8c6 0 12 5 12 12 0 2-.4 4-1 5.6l4.6 4-2.8 3.4-4-3.4c-.6.4-1.3.7-2 1l1 5.4h-4l-1-5h-2v5h-4v-5h-6v5h-4v-5h-2l-1 5h-4l1-5.4c-.7-.3-1.4-.6-2-1l-4 3.4-2.8-3.4 4.6-4c-.6-1.6-1-3.6-1-5.6zm10-4a2 2 0 100 4 2 2 0 000-4zm12 0a2 2 0 100 4 2 2 0 000-4zm-7 6c-1.8 0-3 1-3 2.4 0 1 1 2 2 2.4l-1 3.2h6l-1-3.2c1-.4 2-1.4 2-2.4 0-1.4-1.2-2.4-3-2.4z"/>
-        </svg>
-      </div>
+      <img src="assets/hero.jpg" alt="A bear at a forest table doing rally-capacity math alongside a sage and two helpers">
     </div>
   </div>
   <div class="scrollcue"><span>Read</span><span class="ln"></span></div>
@@ -608,7 +590,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
       <div class="calc-tips">
         <b>Why average across leaders?</b> Any leader could end up calling the rally. Averaging means a single joiner march size works no matter whose Command Center the hunt starts from - no one over-commits, no one wastes a slot.
         <br><br>
-        <b>Why cap the divisor at 14?</b> A rally has 15 seats - the leader plus 14 joiners. With more than fourteen allies online, the math still works at 1/14: the first fourteen to tap fill the rally, the rest can launch the next one.
+        <b>Why cap at 14 players?</b> A rally only has 14 joiner slots. Beyond fourteen the math stops changing - the first fourteen to tap fill the rally, and any extra allies start the next call.
       </div>
     </div>
 
@@ -666,7 +648,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
 /* ============ calculator ============ */
 (function(){
   var ldCount=1, plCount=14, capacities=[917000];
-  var MIN_LD=1, MAX_LD=8, MIN_PL=1, MAX_PL=20;
+  var MIN_LD=1, MAX_LD=8, MIN_PL=1, MAX_PL=14;
 
   var ldCountV=document.getElementById('ldCountV'),
       plCountV=document.getElementById('plCountV'),
@@ -744,12 +726,7 @@ footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
     bPl.textContent=plCount;
     bDiv.textContent=div;
     bUsed.textContent=fmt(per*joinersFilled);
-    if(plCount===15){
-      rSub.textContent='All 14 joiner slots fill exactly - this is the sweet spot.';
-    } else if(plCount>15){
-      var q=plCount-15;
-      rSub.textContent='All 14 joiner slots fill; '+q+' player'+(q===1?'':'s')+' queue for the next call.';
-    } else if(plCount===1){
+    if(plCount===1){
       rSub.textContent='No joiners yet - add at least one ally so the rally has someone to call.';
     } else {
       rSub.textContent=joinersFilled+' joiner slot'+(joinersFilled===1?'':'s')+' filled out of 14. Each joiner can safely send up to this much without overspilling the leader.';
