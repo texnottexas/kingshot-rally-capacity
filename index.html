@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https://www.gstatic.com https://fonts.gstatic.com https://translate.googleapis.com https://translate.google.com https://www.google.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com https://translate.googleapis.com; script-src 'self' 'unsafe-inline' https://translate.googleapis.com https://translate.google.com https://translate-pa.googleapis.com https://www.gstatic.com; font-src https://fonts.gstatic.com; connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://translate.google.com; frame-src 'self' https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'none';">
+<title>Bear Hunt Rally Capacity - A Kingshot Coordination Codex</title>
+<meta name="description" content="Understand and calculate Kingshot bear hunt rally capacity: where the numbers come from, how they combine, and how to size joiners so every rally fills perfectly.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parch:      oklch(0.945 0.022 80);
+  --parch-2:    oklch(0.905 0.030 76);
+  --parch-edge: oklch(0.83 0.038 70);
+  --ink:        oklch(0.265 0.020 52);
+  --ink-soft:   oklch(0.44 0.022 56);
+  --ink-faint:  oklch(0.58 0.020 60);
+  --gold:       oklch(0.74 0.130 73);
+  --gold-deep:  oklch(0.565 0.115 62);
+  --gold-bright:oklch(0.85 0.125 84);
+  --ember:      oklch(0.515 0.200 32);
+  --ember-br:   oklch(0.625 0.215 38);
+  --iron:       oklch(0.185 0.020 55);
+  --iron-2:     oklch(0.245 0.022 56);
+  --iron-3:     oklch(0.315 0.022 58);
+  --leaf:       oklch(0.56 0.130 145);
+  --leaf-deep:  oklch(0.43 0.115 145);
+  --sky:        oklch(0.62 0.115 235);
+  --sky-deep:   oklch(0.45 0.110 235);
+
+  --maxw: 1180px;
+  --gap: clamp(1rem, 3vw, 2.6rem);
+  --ease: cubic-bezier(.16,1,.3,1);
+
+  --fs-body: clamp(1.02rem, 0.97rem + 0.32vw, 1.2rem);
+  --fs-lead: clamp(1.18rem, 1.05rem + 0.7vw, 1.6rem);
+  --fs-h2:   clamp(2rem, 1.3rem + 3.1vw, 3.7rem);
+  --fs-h3:   clamp(1.3rem, 1.05rem + 1.1vw, 1.95rem);
+  --fs-mega: clamp(3.2rem, 1.4rem + 9vw, 8.5rem);
+
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  font-family:"Spectral",Georgia,serif;
+  font-size:var(--fs-body);
+  line-height:1.62;
+  color:var(--ink);
+  background:var(--parch);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+
+.grain::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--noise);
+  background-size:220px 220px;
+  mix-blend-mode:multiply;opacity:.05;z-index:1;
+}
+
+h1,h2,h3,.cz{font-family:"Cinzel",serif;font-weight:700;letter-spacing:.01em;line-height:1.06}
+strong,b{font-weight:700;color:inherit}
+em{font-style:italic}
+a{color:inherit}
+
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(1.1rem,4vw,2.4rem)}
+
+/* ============ reading progress ============ */
+#progress{position:fixed;inset:0 auto auto 0;height:3px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));
+  box-shadow:0 0 12px oklch(0.74 0.13 73 / .6);}
+
+/* ============ sticky chapter bar ============ */
+#bar{position:fixed;top:0;left:0;right:0;z-index:110;
+  display:flex;align-items:center;gap:1.1rem;min-height:46px;
+  padding:.5rem clamp(1rem,4vw,2.2rem);padding-right:clamp(4.6rem,9vw,6.2rem);
+  background:oklch(0.18 0.02 55 / .9);
+  backdrop-filter:blur(10px) saturate(1.2);
+  border-bottom:1px solid oklch(0.74 0.13 73 / .28);
+  transform:translateY(-110%);transition:transform .5s var(--ease);
+  color:var(--parch);
+}
+#bar.show{transform:none}
+#bar .btitle{font-family:"Cinzel";font-weight:700;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-bright);text-shadow:0 1px 0 #0007;margin-right:.4rem}
+#bar nav{display:flex;gap:.2rem;flex:1;overflow-x:auto;scrollbar-width:none}
+#bar nav::-webkit-scrollbar{display:none}
+#bar nav a{font-family:"Cinzel";font-weight:600;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  color:oklch(0.85 0.025 78 / .85);text-decoration:none;padding:.45rem .68rem;border-radius:7px;white-space:nowrap}
+#bar nav a:hover{color:var(--gold-bright);background:oklch(0.74 0.13 73 / .12)}
+@media(max-width:680px){#bar nav a{font-size:.7rem;padding:.4rem .55rem}}
+
+/* ============ hero ============ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;
+  background:
+    radial-gradient(120% 80% at 75% 25%, oklch(0.4 0.06 60 / .55), transparent 60%),
+    radial-gradient(85% 70% at 18% 75%, oklch(0.45 0.16 32 / .42), transparent 65%),
+    linear-gradient(160deg, oklch(0.16 0.02 50) 0%, oklch(0.21 0.04 48) 55%, oklch(0.18 0.03 44) 100%);
+  color:var(--parch);overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:-10%;
+  background:var(--noise);background-size:220px 220px;
+  opacity:.08;mix-blend-mode:overlay;pointer-events:none;
+}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .8fr;align-items:center;gap:var(--gap);position:relative;z-index:2;padding-block:6rem 5rem}
+@media(max-width:880px){.hero .wrap{grid-template-columns:1fr;padding-block:5.5rem 3.5rem}}
+
+.hero .kicker{display:inline-flex;align-items:center;gap:.7rem;
+  font-family:"Cinzel";font-weight:700;font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold-bright);padding:.4rem .85rem;border-radius:99px;
+  background:linear-gradient(180deg, oklch(0.74 0.13 73 / .14), oklch(0.74 0.13 73 / .06));
+  border:1px solid oklch(0.74 0.13 73 / .3);margin-bottom:1.4rem}
+.hero .kicker svg{width:18px;height:18px}
+.hero h1{font-size:var(--fs-mega);margin-bottom:1.2rem}
+.hero h1 .small{display:block;font-family:"Cinzel";font-weight:500;font-size:.32em;letter-spacing:.42em;
+  color:oklch(0.78 0.05 78 / .85);text-transform:uppercase;margin-bottom:.55rem}
+.hero h1 .word{background:linear-gradient(180deg, var(--gold-bright), var(--gold) 60%, var(--gold-deep));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:inline-block;padding-right:.06em;
+  filter:drop-shadow(0 4px 18px oklch(0.74 0.13 73 / .35))}
+.hero .blurb{font-size:var(--fs-lead);color:oklch(0.86 0.02 78);max-width:38ch;margin-bottom:1.8rem;line-height:1.5}
+.hero .byline{display:flex;align-items:center;gap:.85rem;font-size:.95rem;color:oklch(0.78 0.02 75)}
+.hero .seal{width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(140deg, var(--gold-bright), var(--gold-deep));
+  display:grid;place-items:center;font-family:"Cinzel";font-weight:800;color:var(--iron);
+  box-shadow:0 4px 14px -4px oklch(0.74 0.13 73 / .6), inset 0 1px 0 #fff7}
+
+/* hero art - illustrated bear emblem */
+.hero-art{position:relative;display:grid;place-items:center;aspect-ratio:1;max-width:420px;width:100%;justify-self:center}
+.hero-art .ring{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at center, oklch(0.74 0.13 73 / .14), transparent 60%);
+  border:1px dashed oklch(0.74 0.13 73 / .35)}
+.hero-art .ring.r2{inset:8%;border-style:solid;border-color:oklch(0.74 0.13 73 / .22)}
+.hero-art .ring.r3{inset:18%;border:1px dashed oklch(0.74 0.13 73 / .3);
+  animation:spin 60s linear infinite}
+.hero-art .core{position:relative;z-index:3;width:60%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, oklch(0.4 0.05 50), oklch(0.16 0.03 50) 75%);
+  display:grid;place-items:center;
+  box-shadow:0 25px 50px -20px #000a, inset 0 -8px 30px oklch(0.74 0.13 73 / .12), inset 0 2px 0 #fff1;
+  border:1px solid oklch(0.74 0.13 73 / .35)}
+.hero-art .core svg{width:65%;height:65%;color:var(--gold-bright);
+  filter:drop-shadow(0 4px 12px oklch(0.74 0.13 73 / .5))}
+.hero-art .pip{position:absolute;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle, var(--gold-bright), var(--gold-deep));
+  box-shadow:0 0 14px oklch(0.74 0.13 73 / .8);z-index:4}
+.hero-art .pip:nth-child(4){top:5%;left:50%;transform:translateX(-50%)}
+.hero-art .pip:nth-child(5){top:50%;right:5%;transform:translateY(-50%)}
+.hero-art .pip:nth-child(6){bottom:5%;left:50%;transform:translateX(-50%)}
+.hero-art .pip:nth-child(7){top:50%;left:5%;transform:translateY(-50%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.scrollcue{position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  font-family:"Cinzel";font-size:.62rem;letter-spacing:.5em;color:oklch(0.78 0.04 78 / .6);text-transform:uppercase}
+.scrollcue .ln{width:1px;height:36px;background:linear-gradient(180deg,oklch(0.78 0.04 78 / .8),transparent);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%,100%{height:36px;opacity:.3}50%{height:46px;opacity:1}}
+
+/* ============ sections ============ */
+section{position:relative}
+.sec{padding-block:clamp(3.6rem, 7vw, 6.2rem);position:relative}
+.sec .wrap{position:relative;z-index:2}
+.sec-eyebrow{display:inline-flex;align-items:center;gap:.6rem;
+  font-family:"Cinzel";font-weight:600;font-size:.72rem;letter-spacing:.36em;text-transform:uppercase;
+  color:var(--gold-deep);margin-bottom:1rem}
+.sec-eyebrow::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright))}
+.sec h2{font-size:var(--fs-h2);margin-bottom:.7rem;color:var(--ink);max-width:18ch}
+.sec h2 .accent{background:linear-gradient(180deg,var(--gold-deep),var(--gold) 60%,var(--gold-bright));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:inline-block;padding-right:.04em}
+.sec .lead{font-size:var(--fs-lead);color:var(--ink-soft);max-width:62ch;margin-bottom:2.4rem;line-height:1.55}
+
+/* ============ three-numbers section ============ */
+.numbers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.4vw,2rem);margin-top:2.4rem}
+@media(max-width:980px){.numbers-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:680px){.numbers-grid{grid-template-columns:1fr;gap:1.6rem}}
+
+.num-card{position:relative;
+  background:linear-gradient(180deg,#fff,oklch(0.96 0.018 80));
+  border:1px solid var(--parch-edge);border-radius:18px;overflow:hidden;
+  box-shadow:0 18px 38px -22px oklch(0.25 0.06 60 / .55), 0 1px 0 #fff inset;
+  display:flex;flex-direction:column;
+}
+.num-card .shot{position:relative;background:oklch(0.92 0.02 78);aspect-ratio:1320/2868;overflow:hidden;
+  border-bottom:1px solid var(--parch-edge)}
+.num-card .shot img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.num-card .callout{position:absolute;border:2px solid var(--ember);border-radius:8px;
+  box-shadow:0 0 0 4px oklch(0.515 0.2 32 / .18), 0 8px 22px -8px oklch(0.515 0.2 32 / .6);
+  pointer-events:none;animation:pulseCallout 2.6s ease-in-out infinite}
+.num-card .callout .tag{position:absolute;left:50%;top:-1.7rem;transform:translateX(-50%);
+  background:var(--ember);color:#fff;font-family:"Cinzel";font-weight:700;font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;padding:.25rem .6rem;border-radius:6px;white-space:nowrap;
+  box-shadow:0 4px 12px -4px oklch(0.515 0.2 32 / .7)}
+@keyframes pulseCallout{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+.num-card .body{padding:1.3rem clamp(1.1rem,2vw,1.6rem) 1.5rem;display:flex;flex-direction:column;gap:.65rem;flex:1}
+.num-card .step{display:inline-flex;align-items:center;gap:.55rem;font-family:"Cinzel";font-weight:700;
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep)}
+.num-card .step .pip{width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(140deg,var(--gold-bright),var(--gold-deep));
+  display:grid;place-items:center;color:var(--iron);font-size:.8rem;letter-spacing:0;
+  box-shadow:inset 0 1px 0 #fff8, 0 3px 8px -3px oklch(0.74 0.13 73 / .55)}
+.num-card h3{font-family:"Cinzel";font-size:1.22rem;color:var(--ink)}
+.num-card p{color:var(--ink-soft);font-size:.97rem;line-height:1.55}
+.num-card .val{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.04rem;
+  background:oklch(0.94 0.04 80);border:1px dashed var(--parch-edge);
+  padding:.5rem .75rem;border-radius:8px;color:var(--ember);align-self:flex-start;
+  letter-spacing:.02em}
+
+/* ============ formula section ============ */
+.formula-box{background:linear-gradient(180deg, oklch(0.97 0.018 82), oklch(0.93 0.028 76));
+  border:1px solid var(--parch-edge);border-radius:18px;padding:clamp(1.6rem,3vw,2.4rem);
+  box-shadow:0 18px 38px -22px oklch(0.25 0.06 60 / .5), inset 0 1px 0 #fff;
+  margin-top:1.4rem}
+.formula{font-family:"JetBrains Mono",monospace;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;
+  color:var(--ink);text-align:center;padding:1.2rem .5rem;
+  background:#fff;border:1px solid var(--parch-edge);border-radius:12px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.55rem .8rem;line-height:1.4}
+.formula .t{color:var(--gold-deep);background:oklch(0.95 0.05 82);padding:.15rem .55rem;border-radius:6px;
+  border:1px solid oklch(0.74 0.13 73 / .3)}
+.formula .t.sky{color:var(--sky-deep);background:oklch(0.93 0.05 235);border-color:oklch(0.62 0.115 235 / .3)}
+.formula .t.leaf{color:var(--leaf-deep);background:oklch(0.93 0.05 145);border-color:oklch(0.56 0.13 145 / .3)}
+.formula .op{color:var(--ember);font-size:1.05em}
+.formula .eq{color:var(--ink-faint)}
+.formula .res{color:var(--ember);background:oklch(0.95 0.05 60);padding:.2rem .65rem;border-radius:6px;
+  border:1px solid oklch(0.515 0.2 32 / .35)}
+.formula-note{margin-top:1rem;font-size:.95rem;color:var(--ink-soft);text-align:center;font-style:italic}
+
+.example-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.4rem}
+@media(max-width:680px){.example-row{grid-template-columns:1fr}}
+.ex-chip{background:#fff;border:1px solid var(--parch-edge);border-radius:12px;padding:.95rem 1rem;
+  display:flex;flex-direction:column;gap:.25rem}
+.ex-chip .lbl{font-family:"Cinzel";font-weight:600;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-faint)}
+.ex-chip .v{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.15rem;color:var(--ink)}
+.ex-chip .v.gold{color:var(--gold-deep)}
+.ex-chip .v.sky{color:var(--sky-deep)}
+.ex-chip .v.ember{color:var(--ember)}
+
+/* ============ calculator ============ */
+.calc{position:relative;background:linear-gradient(180deg, oklch(0.97 0.018 82), oklch(0.93 0.026 76)) padding-box,
+  linear-gradient(135deg, var(--gold-bright), var(--gold-deep) 55%, var(--gold)) border-box;
+  border:2px solid transparent;border-radius:22px;padding:clamp(1.6rem,3vw,2.6rem);
+  box-shadow:0 28px 58px -30px oklch(0.25 0.06 60 / .65), inset 0 1px 0 #fff;}
+.calc-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.4rem,3vw,2.4rem);align-items:start}
+@media(max-width:880px){.calc-grid{grid-template-columns:1fr}}
+
+.calc-inputs{display:flex;flex-direction:column;gap:1.3rem}
+.field{display:flex;flex-direction:column;gap:.5rem}
+.field label{font-family:"Cinzel";font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-deep)}
+.field .hint{font-size:.86rem;color:var(--ink-soft);font-style:italic;margin-top:-.25rem}
+
+.stepper{display:inline-flex;align-items:center;gap:.55rem;
+  background:#fff;border:1px solid var(--parch-edge);border-radius:12px;padding:.35rem;align-self:flex-start;
+  box-shadow:inset 0 1px 0 #fff8, 0 4px 10px -6px oklch(0.25 0.06 60 / .35)}
+.stepper button{width:36px;height:36px;border-radius:8px;border:none;cursor:pointer;
+  font-family:"Cinzel";font-weight:800;font-size:1.1rem;color:var(--iron);
+  background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+  box-shadow:inset 0 1px 0 #fff8, 0 3px 8px -4px oklch(0.74 0.13 73 / .55);
+  transition:transform .15s var(--ease)}
+.stepper button:hover{transform:translateY(-1px)}
+.stepper button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.stepper .v{min-width:56px;text-align:center;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.2rem;color:var(--ink)}
+
+.leaders-list{display:flex;flex-direction:column;gap:.6rem}
+.leader-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;
+  background:#fff;border:1px solid var(--parch-edge);border-radius:12px;padding:.55rem .75rem;
+  box-shadow:inset 0 1px 0 #fff8}
+.leader-row .ix{width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(140deg,var(--gold-bright),var(--gold-deep));
+  display:grid;place-items:center;font-family:"Cinzel";font-weight:800;font-size:.85rem;color:var(--iron);
+  box-shadow:inset 0 1px 0 #fff8, 0 3px 8px -3px oklch(0.74 0.13 73 / .55)}
+.leader-row input{width:100%;border:none;background:transparent;
+  font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.05rem;color:var(--ink);
+  padding:.3rem .2rem;outline:none}
+.leader-row input::placeholder{color:var(--ink-faint);font-weight:500}
+.leader-row .unit{font-family:"Cinzel";font-weight:600;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.leader-row.invalid{border-color:var(--ember);box-shadow:0 0 0 3px oklch(0.515 0.2 32 / .15)}
+
+.calc-result{background:linear-gradient(180deg, oklch(0.18 0.02 55), oklch(0.13 0.02 50));
+  border-radius:18px;padding:clamp(1.4rem,2.8vw,2rem);color:var(--parch);position:relative;overflow:hidden;
+  border:1px solid oklch(0.74 0.13 73 / .25);
+  box-shadow:0 18px 40px -22px #000a, inset 0 1px 0 oklch(0.74 0.13 73 / .25)}
+.calc-result::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(80% 60% at 50% 0%, oklch(0.74 0.13 73 / .18), transparent 65%);pointer-events:none}
+.calc-result .r-label{font-family:"Cinzel";font-weight:600;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold-bright);margin-bottom:.5rem;position:relative}
+.calc-result .r-value{font-family:"Cinzel";font-weight:800;font-size:clamp(2.4rem,7vw,3.6rem);line-height:1.05;
+  background:linear-gradient(180deg,var(--gold-bright),var(--gold) 65%,var(--gold-deep));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 16px oklch(0.74 0.13 73 / .35));position:relative;margin-bottom:.45rem}
+.calc-result .r-sub{font-size:.95rem;color:oklch(0.82 0.025 78 / .9);line-height:1.5;position:relative}
+.calc-result .breakdown{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid oklch(0.74 0.13 73 / .2);position:relative}
+.breakdown-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.45rem 0;border-bottom:1px dashed oklch(0.74 0.13 73 / .15);font-size:.92rem}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-row .k{color:oklch(0.78 0.02 78);font-family:"Cinzel";font-weight:600;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.breakdown-row .v{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--gold-bright)}
+
+.calc-tips{margin-top:1.6rem;padding:1rem 1.2rem;background:oklch(0.94 0.035 80);
+  border:1px solid var(--parch-edge);border-radius:12px;font-size:.92rem;color:var(--ink-soft);line-height:1.55}
+.calc-tips b{color:var(--ink)}
+
+/* ============ scenario table ============ */
+.scenarios{margin-top:2rem;overflow-x:auto;border-radius:14px;border:1px solid var(--parch-edge);
+  background:#fff;box-shadow:0 12px 28px -18px oklch(0.25 0.06 60 / .4)}
+.scenarios table{width:100%;border-collapse:collapse;font-size:.95rem}
+.scenarios th,.scenarios td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--parch-edge)}
+.scenarios th{font-family:"Cinzel";font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-deep);background:oklch(0.96 0.022 80)}
+.scenarios td{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--ink)}
+.scenarios td:first-child{font-family:"Cinzel";font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+.scenarios tr:last-child td{border-bottom:none}
+.scenarios tr.hi{background:linear-gradient(90deg, oklch(0.95 0.05 82 / .55), transparent)}
+.scenarios tr.hi td:first-child{color:var(--ember)}
+.scenarios .check{color:var(--leaf-deep);font-family:"Cinzel";font-weight:700;letter-spacing:.06em;font-size:.78rem}
+.scenarios .x{color:var(--ember);font-family:"Cinzel";font-weight:700;letter-spacing:.06em;font-size:.78rem}
+
+/* ============ how it works diagram ============ */
+.diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:.8rem;margin-top:2rem}
+@media(max-width:880px){.diagram{grid-template-columns:1fr;gap:.5rem}.diagram .arr{justify-self:center;transform:rotate(90deg)}}
+.diagram .node{background:linear-gradient(180deg,#fff,oklch(0.96 0.018 80));
+  border:1px solid var(--parch-edge);border-radius:14px;padding:1.1rem 1.1rem;
+  box-shadow:0 8px 22px -14px oklch(0.25 0.06 60 / .45), inset 0 1px 0 #fff;
+  display:flex;flex-direction:column;gap:.4rem;text-align:center}
+.diagram .node .lbl{font-family:"Cinzel";font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.diagram .node.gold .lbl{color:var(--gold-deep)}
+.diagram .node.sky .lbl{color:var(--sky-deep)}
+.diagram .node.ember .lbl{color:var(--ember)}
+.diagram .node .val{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.05rem;color:var(--ink)}
+.diagram .node .sub{font-size:.84rem;color:var(--ink-faint);line-height:1.4}
+.diagram .arr{display:grid;place-items:center;font-family:"Cinzel";font-weight:800;color:var(--gold-deep);font-size:1.4rem;padding:0 .2rem}
+
+/* ============ language switcher ============ */
+body{top:0 !important}
+body > .skiptranslate{display:none !important}
+.goog-te-banner-frame.skiptranslate{display:none !important}
+#google_translate_element{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+
+.lang-fab{position:fixed;top:23px;right:clamp(.8rem,3vw,1.4rem);z-index:130;transform:translateY(-50%);
+  display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;
+  font-family:"Cinzel",serif;font-weight:700;font-size:.78rem;letter-spacing:.08em;
+  color:var(--iron);background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+  border:1px solid var(--gold-deep);border-radius:999px;padding:.4rem .72rem;
+  box-shadow:0 4px 14px -5px oklch(0.25 0.06 50 / .8), inset 0 1px 0 #fff8;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease)}
+.lang-fab:hover{transform:translateY(calc(-50% - 1px));box-shadow:0 9px 22px -7px oklch(0.25 0.06 50 / .85), inset 0 1px 0 #fff9}
+.lang-fab .flag{font-size:1.05rem;line-height:1}
+@media(max-width:600px){.lang-fab .code{display:none}.lang-fab{padding:.5rem .55rem}}
+
+.lang-overlay{display:none;position:fixed;inset:0;z-index:200;
+  background:oklch(0.12 0.02 50 / .68);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:1.2rem}
+.lang-overlay.active{display:flex}
+.lang-dialog{position:relative;border-radius:16px;padding:1.4rem;
+  max-width:460px;width:100%;max-height:82vh;overflow-y:auto;
+  background:linear-gradient(180deg, oklch(0.97 0.015 82), oklch(0.92 0.026 76)) padding-box,
+    linear-gradient(135deg, var(--gold), var(--gold-deep) 50%, var(--gold-bright)) border-box;
+  border:2px solid transparent;box-shadow:0 30px 60px -24px #000b}
+.lang-dialog-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.lang-dialog-head h3{font-family:"Cinzel";font-size:1.05rem;letter-spacing:.06em;color:var(--ink)}
+.lang-close{background:none;border:none;color:var(--ink-faint);font-size:1.3rem;line-height:1;
+  cursor:pointer;padding:.1rem .4rem;border-radius:8px}
+.lang-close:hover{color:var(--ember);background:oklch(0.86 0.04 60 / .6)}
+.lang-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+@media(max-width:480px){.lang-grid{grid-template-columns:1fr}}
+.lang-opt{display:flex;align-items:center;gap:.6rem;padding:.55rem .7rem;border-radius:10px;
+  border:1px solid var(--parch-edge);background:#fff7;cursor:pointer;
+  font-family:"Spectral",serif;font-size:.92rem;color:var(--ink);text-align:left;
+  transition:border-color .15s, background .15s, transform .15s}
+.lang-opt:hover{border-color:var(--gold);background:#fff;transform:translateY(-1px)}
+.lang-opt.active{border-color:var(--gold-deep);background:linear-gradient(180deg,oklch(0.95 0.05 82),oklch(0.9 0.06 78))}
+.lang-opt .flag{font-size:1.15rem;line-height:1}
+.lang-opt .name{flex:1}
+
+/* ============ footer ============ */
+footer{background:linear-gradient(180deg, oklch(0.18 0.02 50), oklch(0.13 0.02 48));
+  color:oklch(0.82 0.025 78);padding:3rem 0 2.4rem;margin-top:4rem;
+  border-top:1px solid oklch(0.74 0.13 73 / .25);position:relative}
+footer .wrap{text-align:center}
+footer h3{font-family:"Cinzel";font-size:1.2rem;color:var(--gold-bright);margin-bottom:.6rem;letter-spacing:.06em}
+footer p{max-width:54ch;margin:0 auto .6rem;font-size:.95rem;line-height:1.6}
+footer .credit{font-size:.85rem;color:oklch(0.7 0.02 78);margin-top:1rem;letter-spacing:.04em}
+footer a{color:var(--gold-bright);text-decoration:none;border-bottom:1px dashed oklch(0.74 0.13 73 / .4)}
+footer a:hover{color:var(--gold);border-bottom-color:var(--gold-bright)}
+
+/* ============ reveal animation ============ */
+[data-rv]{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+[data-rv].in{opacity:1;transform:none}
+[data-rv].d1{transition-delay:.08s}[data-rv].d2{transition-delay:.16s}
+[data-rv].d3{transition-delay:.24s}[data-rv].d4{transition-delay:.32s}
+@media (prefers-reduced-motion:reduce){
+  [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
+  .hero-art .ring.r3{animation:none!important}
+  .num-card .callout{animation:none!important}
+  .scrollcue .ln{animation:none!important}
+}
+</style>
+</head>
+<body class="grain">
+<div id="progress"></div>
+
+<button class="lang-fab notranslate" id="langFab" aria-haspopup="dialog" aria-label="Change language">
+  <span class="flag" id="langFlag">🇺🇸</span><span class="code" id="langCode">EN</span>
+</button>
+<div class="lang-overlay" id="langOverlay" role="dialog" aria-modal="true" aria-label="Select language">
+  <div class="lang-dialog">
+    <div class="lang-dialog-head">
+      <h3 class="notranslate">Select Language</h3>
+      <button class="lang-close notranslate" id="langClose" aria-label="Close">✕</button>
+    </div>
+    <div class="lang-grid" id="langGrid"></div>
+  </div>
+</div>
+<div id="google_translate_element" aria-hidden="true"></div>
+
+<header id="bar">
+  <span class="btitle">Rally Capacity</span>
+  <nav>
+    <a href="#top">Top</a>
+    <a href="#numbers">The Numbers</a>
+    <a href="#math">The Math</a>
+    <a href="#calculator">Calculator</a>
+    <a href="#scenarios">Scenarios</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-text">
+      <div class="kicker" data-rv>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 4.8L20 8l-4 3.6L17 18l-5-3-5 3 1-6.4L4 8l5.6-1.2z"/></svg>
+        <span>Bear Hunt Codex</span>
+      </div>
+      <h1 data-rv class="d1"><span class="small">Kingshot Bear Hunt</span><span class="word">Rally Capacity</span></h1>
+      <p class="blurb" data-rv style="--d:2">Where every number comes from, how they add up on the rally screen, and the simple split that keeps fourteen joiners filling every slot.</p>
+      <div class="byline" data-rv style="--d:3">
+        <span class="seal">T</span>
+        <div>A coordination tool · for the bear-hunt callers of every kingdom</div>
+      </div>
+    </div>
+    <div class="hero-art" data-rv class="d2">
+      <span class="ring"></span><span class="ring r2"></span><span class="ring r3"></span>
+      <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
+      <div class="core">
+        <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
+          <path d="M16 28c0-7 6-12 12-12h8c6 0 12 5 12 12 0 2-.4 4-1 5.6l4.6 4-2.8 3.4-4-3.4c-.6.4-1.3.7-2 1l1 5.4h-4l-1-5h-2v5h-4v-5h-6v5h-4v-5h-2l-1 5h-4l1-5.4c-.7-.3-1.4-.6-2-1l-4 3.4-2.8-3.4 4.6-4c-.6-1.6-1-3.6-1-5.6zm10-4a2 2 0 100 4 2 2 0 000-4zm12 0a2 2 0 100 4 2 2 0 000-4zm-7 6c-1.8 0-3 1-3 2.4 0 1 1 2 2 2.4l-1 3.2h6l-1-3.2c1-.4 2-1.4 2-2.4 0-1.4-1.2-2.4-3-2.4z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="scrollcue"><span>Read</span><span class="ln"></span></div>
+</section>
+
+<!-- ============ NUMBERS ============ -->
+<section class="sec" id="numbers">
+  <div class="wrap">
+    <div class="sec-eyebrow" data-rv>I. The Three Numbers</div>
+    <h2 data-rv>Three screens, <span class="accent">three numbers</span></h2>
+    <p class="lead" data-rv class="d1">Every rally is decided by three figures pulled from three different places in the game. Find each one, learn what it controls, and the rally screen total stops being a mystery.</p>
+
+    <div class="numbers-grid">
+      <article class="num-card" data-rv>
+        <div class="shot">
+          <img src="assets/command-center.png" alt="Command Center popup showing Rally Capacity 915K plus 2,000">
+          <div class="callout" style="left:9%;top:59%;width:80%;height:4.5%"><span class="tag">Rally Capacity</span></div>
+        </div>
+        <div class="body">
+          <div class="step"><span class="pip">1</span> Command Center</div>
+          <h3>Rally Capacity</h3>
+          <p>Tap your <b>Command Center</b> to read it. This is the size of the joiner pool: it does <em>not</em> include your own march, only the slots your allies will fill.</p>
+          <span class="val">915,000 + 2,000 = 917,000</span>
+        </div>
+      </article>
+
+      <article class="num-card" data-rv class="d1">
+        <div class="shot">
+          <img src="assets/march-setup.jpg" alt="March setup screen showing Deployment Capacity 152,210/152,210">
+          <div class="callout" style="left:3%;top:17.3%;width:33%;height:2.6%"><span class="tag">Deployment</span></div>
+        </div>
+        <div class="body">
+          <div class="step"><span class="pip">2</span> March Setup</div>
+          <h3>Deployment Capacity</h3>
+          <p>Your <b>own</b> max march, shown next to the troop bar when you open a target. It is the size <em>you</em> contribute when you call the rally - independent of the joiner pool above.</p>
+          <span class="val">152,210</span>
+        </div>
+      </article>
+
+      <article class="num-card" data-rv class="d2">
+        <div class="shot">
+          <img src="assets/rally-screen.png" alt="Rally screen showing Team 152,210 of 1,069,210 and 1 of 15 slots">
+          <div class="callout" style="left:2%;top:36.5%;width:53%;height:3.6%"><span class="tag">Team Total</span></div>
+        </div>
+        <div class="body">
+          <div class="step"><span class="pip">3</span> Rally Screen</div>
+          <h3>Team Total</h3>
+          <p>What the rally screen calls <b>Team</b> is just the two numbers added together. The "<b>1 / 15</b>" up top means one slot used (the leader) - <b>14 joiner slots left</b>.</p>
+          <span class="val">152,210 / 1,069,210</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MATH ============ -->
+<section class="sec" id="math" style="background:linear-gradient(180deg, oklch(0.93 0.025 76), oklch(0.945 0.022 80))">
+  <div class="wrap">
+    <div class="sec-eyebrow" data-rv>II. The Math</div>
+    <h2 data-rv>How the rally screen <span class="accent">adds up</span></h2>
+    <p class="lead" data-rv class="d1">The "Team" number you see when joining a rally is just the leader's march plus the room they have reserved for joiners. Once you split that joiner pool by the number of allies who show up, you know exactly how big each person should march.</p>
+
+    <div class="diagram">
+      <div class="node sky" data-rv>
+        <div class="lbl">Deployment</div>
+        <div class="val">152,210</div>
+        <div class="sub">The leader's own march</div>
+      </div>
+      <div class="arr" data-rv class="d1">+</div>
+      <div class="node gold" data-rv class="d2">
+        <div class="lbl">Rally Capacity</div>
+        <div class="val">917,000</div>
+        <div class="sub">Pool reserved for joiners</div>
+      </div>
+      <div class="arr" data-rv class="d3">=</div>
+      <div class="node ember" data-rv class="d4">
+        <div class="lbl">Team Total</div>
+        <div class="val">1,069,210</div>
+        <div class="sub">What the rally screen shows</div>
+      </div>
+    </div>
+
+    <div class="formula-box" data-rv>
+      <div style="font-family:'Cinzel';font-weight:600;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);text-align:center;margin-bottom:.9rem">The joiner split</div>
+      <div class="formula">
+        <span class="t">Rally Capacity</span><span class="op">÷</span><span class="t leaf">min(players, 14)</span><span class="eq">=</span><span class="res">Joiner march size</span>
+      </div>
+      <div class="formula-note">Players means how many allies are coordinating - including the leader. The cap at 14 is the number of joiner slots in a rally.</div>
+      <div class="example-row">
+        <div class="ex-chip"><span class="lbl">Rally Capacity</span><span class="v gold">917,000</span></div>
+        <div class="ex-chip"><span class="lbl">Players online</span><span class="v sky">14</span></div>
+        <div class="ex-chip"><span class="lbl">Each joiner sends</span><span class="v ember">65,500</span></div>
+      </div>
+      <div class="formula-note" style="margin-top:1rem">At 14 joiners that math fills the pool exactly. With fewer players, each joiner sends more - so the slots that <em>are</em> filled still use the whole pool.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALCULATOR ============ -->
+<section class="sec" id="calculator">
+  <div class="wrap">
+    <div class="sec-eyebrow" data-rv>III. The Tool</div>
+    <h2 data-rv>Plan your <span class="accent">bear hunt</span></h2>
+    <p class="lead" data-rv class="d1">Drop in your rally leaders' capacities and how many allies will be online. The calculator averages the leaders so anyone can call, then splits the pool by the players showing up.</p>
+
+    <div class="calc" data-rv>
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="field">
+            <label for="ldCount">How many rally leaders?</label>
+            <div class="hint">Anyone in the kingdom who could call the bear rally.</div>
+            <div class="stepper" id="ldStepper">
+              <button type="button" data-act="dec" aria-label="Decrease leader count">−</button>
+              <span class="v" id="ldCountV">1</span>
+              <button type="button" data-act="inc" aria-label="Increase leader count">+</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Each leader's Rally Capacity</label>
+            <div class="hint">From the Command Center popup - including the green +bonus.</div>
+            <div class="leaders-list" id="leadersList"></div>
+          </div>
+
+          <div class="field">
+            <label for="plStepper">Players joining the hunt</label>
+            <div class="hint">Default 14 - the maximum number of joiners a rally can hold.</div>
+            <div class="stepper" id="plStepper">
+              <button type="button" data-act="dec" aria-label="Decrease player count">−</button>
+              <span class="v" id="plCountV">14</span>
+              <button type="button" data-act="inc" aria-label="Increase player count">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-result">
+          <div class="r-label">Recommended joiner march</div>
+          <div class="r-value" id="rOut">65,500</div>
+          <div class="r-sub" id="rSub">Each joiner should set their march to roughly this size. That keeps every slot filled without anyone overspilling the leader's capacity.</div>
+          <div class="breakdown">
+            <div class="breakdown-row"><span class="k">Average rally capacity</span><span class="v" id="bAvg">917,000</span></div>
+            <div class="breakdown-row"><span class="k">Players counted</span><span class="v" id="bPl">14</span></div>
+            <div class="breakdown-row"><span class="k">Divisor used</span><span class="v" id="bDiv">14</span></div>
+            <div class="breakdown-row"><span class="k">Joiner pool used</span><span class="v" id="bUsed">917,000</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-tips">
+        <b>Why average across leaders?</b> Any leader could end up calling the rally. Averaging means a single joiner march size works no matter whose Command Center the hunt starts from - no one over-commits, no one wastes a slot.
+        <br><br>
+        <b>Why cap the divisor at 14?</b> A rally has 15 seats - the leader plus 14 joiners. With more than fourteen allies online, the math still works at 1/14: the first fourteen to tap fill the rally, the rest can launch the next one.
+      </div>
+    </div>
+
+    <!-- scenarios -->
+    <div id="scenarios" style="margin-top:3.4rem">
+      <div class="sec-eyebrow" data-rv>IV. Common scenarios</div>
+      <h2 data-rv style="font-size:clamp(1.6rem,1rem + 2.4vw, 2.6rem)">At a glance, with <span class="accent">917,000</span> rally capacity</h2>
+      <p class="lead" data-rv class="d1" style="margin-bottom:1.4rem">A reference table for the most common bear-hunt turnouts. Recommend whichever row matches the kingdom that night.</p>
+      <div class="scenarios">
+        <table>
+          <thead>
+            <tr>
+              <th>Players online</th>
+              <th>Divisor used</th>
+              <th>Each joiner sends</th>
+              <th>Joiner seats filled</th>
+              <th>All 14 seats?</th>
+            </tr>
+          </thead>
+          <tbody id="scTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <h3>Built for the bear-hunt callers</h3>
+    <p>An open coordination tool for Kingshot kingdoms. No accounts, no tracking - just the math, your numbers, and a slot for every ally that shows up.</p>
+    <p class="credit">Companion to the <a href="https://texnottexas.github.io/kingshot-gear-guide/">Kingshot Forging Codex</a>. Kingshot and its assets belong to their respective owners; this is a non-commercial fan tool.</p>
+  </div>
+</footer>
+
+<script>
+/* sticky bar + scroll progress */
+(function(){
+  var bar=document.getElementById('bar'),pr=document.getElementById('progress');
+  function onScroll(){
+    var sy=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;
+    pr.style.width=(h>0?Math.min(100,(sy/h)*100):0)+'%';
+    if(sy>140) bar.classList.add('show'); else bar.classList.remove('show');
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+
+/* reveal on view */
+(function(){
+  if(!('IntersectionObserver' in window)){ document.querySelectorAll('[data-rv]').forEach(function(n){n.classList.add('in')}); return; }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'-8% 0px',threshold:.05});
+  document.querySelectorAll('[data-rv]').forEach(function(n){io.observe(n);});
+})();
+
+/* ============ calculator ============ */
+(function(){
+  var ldCount=1, plCount=14, capacities=[917000];
+  var MIN_LD=1, MAX_LD=8, MIN_PL=1, MAX_PL=20;
+
+  var ldCountV=document.getElementById('ldCountV'),
+      plCountV=document.getElementById('plCountV'),
+      leadersList=document.getElementById('leadersList'),
+      rOut=document.getElementById('rOut'),
+      rSub=document.getElementById('rSub'),
+      bAvg=document.getElementById('bAvg'),
+      bPl=document.getElementById('bPl'),
+      bDiv=document.getElementById('bDiv'),
+      bUsed=document.getElementById('bUsed'),
+      scTable=document.getElementById('scTable');
+
+  function fmt(n){
+    if(!isFinite(n)||n<0) n=0;
+    return Math.round(n).toLocaleString('en-US');
+  }
+  function parseCap(v){
+    if(!v) return 0;
+    var s=String(v).trim().toLowerCase().replace(/[, ]/g,'');
+    if(!s) return 0;
+    var m=s.match(/^(\d+(?:\.\d+)?)([kmb])?$/);
+    if(!m) return parseFloat(s)||0;
+    var x=parseFloat(m[1]);
+    if(m[2]==='k') x*=1e3;
+    else if(m[2]==='m') x*=1e6;
+    else if(m[2]==='b') x*=1e9;
+    return x;
+  }
+
+  function renderLeaders(){
+    leadersList.innerHTML='';
+    for(var i=0;i<ldCount;i++){
+      var row=document.createElement('div');
+      row.className='leader-row';
+      var ix=document.createElement('div'); ix.className='ix'; ix.textContent=i+1;
+      var input=document.createElement('input');
+      input.type='text'; input.inputMode='numeric'; input.spellcheck=false;
+      input.placeholder='e.g. 917000';
+      input.value=capacities[i]?capacities[i].toLocaleString('en-US'):'';
+      input.setAttribute('aria-label','Leader '+(i+1)+' rally capacity');
+      (function(idx,el){
+        el.addEventListener('input',function(){
+          capacities[idx]=parseCap(el.value);
+          update();
+        });
+        el.addEventListener('blur',function(){
+          var v=parseCap(el.value);
+          capacities[idx]=v;
+          el.value=v?v.toLocaleString('en-US'):'';
+        });
+      })(i,input);
+      var unit=document.createElement('div'); unit.className='unit'; unit.textContent='units';
+      row.appendChild(ix); row.appendChild(input); row.appendChild(unit);
+      leadersList.appendChild(row);
+    }
+  }
+
+  function avgCap(){
+    var sum=0,n=0;
+    for(var i=0;i<ldCount;i++){
+      var v=capacities[i]||0;
+      if(v>0){ sum+=v; n++; }
+    }
+    return n?sum/n:0;
+  }
+
+  function update(){
+    var a=avgCap();
+    var div=Math.min(plCount,14);
+    var per=div>0?a/div:0;
+    var joinersFilled=Math.min(plCount-1,14);
+    if(joinersFilled<0) joinersFilled=0;
+    rOut.textContent=fmt(per);
+    bAvg.textContent=fmt(a);
+    bPl.textContent=plCount;
+    bDiv.textContent=div;
+    bUsed.textContent=fmt(per*joinersFilled);
+    if(plCount===15){
+      rSub.textContent='All 14 joiner slots fill exactly - this is the sweet spot.';
+    } else if(plCount>15){
+      var q=plCount-15;
+      rSub.textContent='All 14 joiner slots fill; '+q+' player'+(q===1?'':'s')+' queue for the next call.';
+    } else if(plCount===1){
+      rSub.textContent='No joiners yet - add at least one ally so the rally has someone to call.';
+    } else {
+      rSub.textContent=joinersFilled+' joiner slot'+(joinersFilled===1?'':'s')+' filled out of 14. Each joiner can safely send up to this much without overspilling the leader.';
+    }
+    renderScenarios(a);
+  }
+
+  function renderScenarios(a){
+    if(!scTable) return;
+    var rows=[3,5,8,10,12,14,15,17,20];
+    var html='';
+    rows.forEach(function(n){
+      var div=Math.min(n,14);
+      var per=a/div;
+      var joinersFilled=Math.min(n-1,14);
+      var pool=per*joinersFilled;
+      var allFilled=(joinersFilled===14);
+      var hi=(n===15)?' class="hi"':'';
+      html+='<tr'+hi+'>'+
+        '<td>'+n+' players</td>'+
+        '<td>÷ '+div+'</td>'+
+        '<td>'+fmt(per)+'</td>'+
+        '<td>'+joinersFilled+' / 14</td>'+
+        '<td>'+(allFilled?'<span class="check">Yes</span>':'<span class="x">'+(14-joinersFilled)+' empty</span>')+'</td>'+
+      '</tr>';
+    });
+    scTable.innerHTML=html;
+  }
+
+  document.getElementById('ldStepper').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-act]'); if(!b) return;
+    var prev=ldCount;
+    if(b.dataset.act==='inc' && ldCount<MAX_LD) ldCount++;
+    else if(b.dataset.act==='dec' && ldCount>MIN_LD) ldCount--;
+    if(ldCount===prev) return;
+    while(capacities.length<ldCount) capacities.push(917000);
+    if(capacities.length>ldCount) capacities.length=ldCount;
+    ldCountV.textContent=ldCount;
+    renderLeaders();
+    update();
+  });
+
+  document.getElementById('plStepper').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-act]'); if(!b) return;
+    if(b.dataset.act==='inc' && plCount<MAX_PL) plCount++;
+    else if(b.dataset.act==='dec' && plCount>MIN_PL) plCount--;
+    plCountV.textContent=plCount;
+    update();
+  });
+
+  renderLeaders();
+  update();
+})();
+
+/* ============ language switcher ============ */
+(function(){
+  var LANGUAGES = [
+    {code:'en',    flag:'🇺🇸', name:'English'},
+    {code:'es',    flag:'🇪🇸', name:'Español'},
+    {code:'fr',    flag:'🇫🇷', name:'Français'},
+    {code:'de',    flag:'🇩🇪', name:'Deutsch'},
+    {code:'pt',    flag:'🇧🇷', name:'Português'},
+    {code:'it',    flag:'🇮🇹', name:'Italiano'},
+    {code:'ru',    flag:'🇷🇺', name:'Русский'},
+    {code:'ja',    flag:'🇯🇵', name:'日本語'},
+    {code:'ko',    flag:'🇰🇷', name:'한국어'},
+    {code:'zh-CN', flag:'🇨🇳', name:'中文'},
+    {code:'ar',    flag:'🇸🇦', name:'العربية'},
+    {code:'tr',    flag:'🇹🇷', name:'Türkçe'},
+    {code:'vi',    flag:'🇻🇳', name:'Tiếng Việt'},
+    {code:'th',    flag:'🇹🇭', name:'ไทย'},
+    {code:'hi',    flag:'🇮🇳', name:'हिन्दी'},
+    {code:'pl',    flag:'🇵🇱', name:'Polski'},
+    {code:'uk',    flag:'🇺🇦', name:'Українська'},
+    {code:'id',    flag:'🇮🇩', name:'Indonesia'}
+  ];
+  var overlay = document.getElementById('langOverlay'),
+      grid    = document.getElementById('langGrid'),
+      fab     = document.getElementById('langFab'),
+      flagEl  = document.getElementById('langFlag'),
+      codeEl  = document.getElementById('langCode');
+
+  function dataFor(code){
+    var base=(code||'en').split('-')[0];
+    for(var i=0;i<LANGUAGES.length;i++){
+      if(LANGUAGES[i].code===code || LANGUAGES[i].code===base) return LANGUAGES[i];
+    }
+    return null;
+  }
+  function detect(){
+    var m=document.cookie.match(/googtrans=\/en\/([a-zA-Z-]{2,10})/);
+    return (m && m[1]) ? m[1] : 'en';
+  }
+  function updateBtn(code){
+    var d=dataFor(code);
+    flagEl.textContent=d?d.flag:'🌐';
+    codeEl.textContent=(d?d.code:code).split('-')[0].toUpperCase();
+    var opts=grid.querySelectorAll('.lang-opt');
+    for(var i=0;i<opts.length;i++) opts[i].classList.toggle('active', opts[i].getAttribute('data-lang')===code);
+  }
+  function applyToCombo(code,delay){
+    var n=0, poll=setInterval(function(){
+      var combo=document.querySelector('.goog-te-combo');
+      if(combo){combo.value=code; combo.dispatchEvent(new Event('change')); clearInterval(poll); updateBtn(code);}
+      if(++n>40) clearInterval(poll);
+    }, delay||200);
+  }
+  window.applyToCombo=applyToCombo;
+
+  function openModal(){overlay.classList.add('active');}
+  function closeModal(){overlay.classList.remove('active');}
+  function restoreEnglish(){
+    try{sessionStorage.removeItem('pendingLang');}catch(e){}
+    document.cookie='googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+    closeModal(); location.reload();
+  }
+  function select(code){
+    if(code==='en'){restoreEnglish(); return;}
+    try{sessionStorage.setItem('pendingLang',code);}catch(e){}
+    applyToCombo(code,200); closeModal();
+  }
+
+  var detected=detect();
+  LANGUAGES.forEach(function(l){
+    var b=document.createElement('button');
+    b.className='lang-opt notranslate'+(l.code===detected?' active':'');
+    b.setAttribute('data-lang',l.code);
+    var f=document.createElement('span'); f.className='flag'; f.textContent=l.flag;
+    var n=document.createElement('span'); n.className='name'; n.textContent=l.name;
+    b.appendChild(f); b.appendChild(n);
+    b.addEventListener('click',function(){select(l.code);});
+    grid.appendChild(b);
+  });
+  updateBtn(detected);
+
+  fab.addEventListener('click',openModal);
+  document.getElementById('langClose').addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay) closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape' && overlay.classList.contains('active')) closeModal();});
+})();
+
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+  var pending=null;
+  try{pending=sessionStorage.getItem('pendingLang'); sessionStorage.removeItem('pendingLang');}catch(e){}
+  if(pending) window.applyToCombo(pending,250);
+}
+</script>
+<script src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
